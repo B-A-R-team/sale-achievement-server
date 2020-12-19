@@ -1,0 +1,16 @@
+{
+  "verbose": false,
+  "debug": false,
+  "exec": "ts-node src/bin/www",
+  "ignore": [
+    "node_modules"
+  ],
+  "events": {
+    "restart": ""
+  },
+  "watch": [
+    "./src"
+  ],
+  "ext": "ts json",
+  "inspect": true
+}

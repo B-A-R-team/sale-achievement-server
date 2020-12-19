@@ -1,0 +1,7 @@
+const bootstrap = require('../app');
+
+bootstrap.default().then((res) => {
+  res.listen(3000, () => {
+    console.log('Running at port 3000');
+  });
+});
