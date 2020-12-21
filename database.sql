@@ -4,10 +4,11 @@ USE `sale_achievement`;
 CREATE TABLE IF NOT EXISTS `staff`(
   `id` INT(9) NOT NULL PRIMARY KEY COMMENT "工号",
   `name` VARCHAR(64) NOT NULL COMMENT "姓名",
-  `nickname` VARCHAR(64) NOT NULL COMMENT "微信昵称",
-  `avatar_url` VARCHAR(255) NOT NULL COMMENT "微信头像",
-  `openid` varchar(255) NOT NULL COMMENT "微信openID",
-  `password` varchar(255) NOT NULL COMMENT "密码"
+  `nickname` VARCHAR(64) DEFAULT NULL COMMENT "微信昵称",
+  `avatar_url` VARCHAR(255) DEFAULT NULL COMMENT "微信头像",
+  `openid` varchar(255) DEFAULT NULL COMMENT "微信openID",
+  `password` varchar(255) NOT NULL COMMENT "密码",
+  `is_quit` TINYINT(4) NOT NULL DEFAULT 0 COMMENT "是否离职"
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_bin COMMENT = '推销员表';
 
 -- 课程表

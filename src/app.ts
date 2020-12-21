@@ -10,18 +10,37 @@ import router from './router';
 import { logger } from './middleware/logger';
 import { catchError } from './middleware/catchError';
 import connectDb from './model';
+import showRoutes from './util/showRoutes';
+import jwt from 'koa-jwt';
+import { JWT_SECRET } from './util/constant';
+import checkApi from './util/checkToken';
+import sslify from 'koa-sslify';
 
-async function bootstrap() {
+async function bootstrap(mode: string = '') {
   await connectDb();
 
   const app = new Koa();
 
+  if (mode === 'production') {
+    app.use(sslify());
+  }
+
   app.use(cors());
   app.use(bodyParser());
+  app.use(
+    jwt({ secret: JWT_SECRET }).unless({
+      custom: (ctx) => {
+        return checkApi(ctx);
+      },
+    })
+  );
 
   app.use(logger());
   app.use(catchError());
   app.use(router.routes()).use(router.allowedMethods());
+
+  // 显示所有已注册的路由
+  showRoutes(router);
 
   return app;
 }

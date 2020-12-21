@@ -19,12 +19,35 @@ export default function response<T>(code: number, data: T | T[], message = '') {
   };
 }
 
+export function responseWithToken<T>(
+  code: number,
+  data: T | T[],
+  token: string,
+  message = ''
+) {
+  return {
+    code,
+    message: message || MESSAGE.get(code),
+    data,
+    token,
+  };
+}
+
 /**
  * 成功的响应
  * @param data 响应数据
  */
 export function responseSuccess<T>(data: T | T[]) {
   return response<T>(stateCode.SUCCESS, data);
+}
+
+/**
+ * 携带token的成功响应
+ * @param data 响应数据
+ * @param token token
+ */
+export function responseSuccessWithToken<T>(data: T | T[], token: string) {
+  return responseWithToken<T>(stateCode.SUCCESS, data, token);
 }
 
 /**

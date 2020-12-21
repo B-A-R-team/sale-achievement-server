@@ -1,3 +1,8 @@
+/**
+ * src/service/course.ts 课程业务
+ * @author 徐梦宇
+ */
+
 import {
   DeleteResult,
   getRepository,

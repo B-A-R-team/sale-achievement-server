@@ -4,7 +4,7 @@ import request from 'supertest';
 import { getConnection } from 'typeorm';
 import bootstrap from '../src/app';
 
-describe('# [test app]', async () => {
+describe('# 全局测试', async () => {
   let server: Server;
 
   before(async () => {
