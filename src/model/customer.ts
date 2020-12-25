@@ -6,6 +6,8 @@ import Staff from './staff';
 export default class Customer {
   @PrimaryColumn() id: number;
 
+  @Column() name: string;
+
   @Column() phone: string;
 
   @Column() wechat: string;

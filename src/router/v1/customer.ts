@@ -4,6 +4,7 @@
  * @description
  * GET     api/v1/customer
  * POST    api/v1/customer
+ * GET     api/v1/customer/:id
  */
 
 import Router from '@koa/router';
@@ -27,5 +28,11 @@ router
     const result = await service().addCustomer(ctx.request.body);
     ctx.body = responseSuccess(result.identifiers[0]);
   });
+
+// api/v1/customer/:id
+router.get('/:id', async (ctx) => {
+  const customer = await service().getCustomer(+ctx.params.id);
+  ctx.body = responseSuccess(customer);
+});
 
 export default router.routes();

@@ -2,14 +2,20 @@
  * router/v1/staff.ts 员工路由
  * @author 徐梦宇
  * @description
- * POST    api/v1/staff
+ * GET     api/v1/staff
  * POST    api/v1/staff/register
+ * POST    api/v1/staff/login
+ * GET     api/v1/staff/:id
  */
 
 import Router from '@koa/router';
 import createService from '../../middleware/createService';
 import { staffService } from '../../service';
-import { responseSuccess } from '../../util/response';
+import {
+  responseError,
+  responseSuccess,
+  responseSuccessWithToken,
+} from '../../util/response';
 
 const router = new Router({
   prefix: 'staff',
@@ -29,8 +35,20 @@ router.post('/register', async (ctx) => {
   ctx.body = responseSuccess(result.identifiers[0]);
 });
 
+// api/v1/staff/login
+router.post('/login', async (ctx) => {
+  const { id, password } = ctx.request.body;
+  const result = await service().loginInWeb(id, password);
+  if (result) {
+    ctx.body = responseSuccessWithToken(result.staff, result.token);
+  } else {
+    ctx.body = responseError('登陆失败，请检查工号/密码');
+  }
+});
+
+// api/v1/staff/:id
 router.get('/:id', async (ctx) => {
-  ctx.body = ctx.params;
+  ctx.body = responseSuccess(await service().getStaff(+ctx.params.id));
 });
 
 export default router.routes();

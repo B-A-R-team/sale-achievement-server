@@ -16,7 +16,7 @@ const notCheckApi: CheckRoute[] = [
   },
 ];
 
-const specialApi = ['/api/v1/register', '/api/v1/login'];
+const specialApi = ['/api/v1/register', '/api/v1/login', '/api/v1/staff/login'];
 
 function isInApiArr(path: string, method: string) {
   return notCheckApi.some((route) => {

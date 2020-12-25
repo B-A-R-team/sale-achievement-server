@@ -11,14 +11,17 @@ const options = {
   ),
 };
 
-if (process.env.MODE === 'production') {
+const PORT = 2992;
+if (process.env.RUN_MODE === 'production') {
+  console.log('# 生产环境 #');
   bootstrap('production').then((server) => {
     const httpsServer = https.createServer(options, server.callback());
-    httpsServer.listen(2992);
+    httpsServer.listen(PORT);
   });
 } else {
   bootstrap().then((server) => {
+    console.log('# 开发环境 #');
     const httpServer = http.createServer(server.callback());
-    httpServer.listen(2992);
+    httpServer.listen(PORT);
   });
 }

@@ -27,6 +27,7 @@ async function bootstrap(mode: string = '') {
 
   app.use(cors());
   app.use(bodyParser());
+  app.use(catchError());
   app.use(
     jwt({ secret: JWT_SECRET }).unless({
       custom: (ctx) => {
@@ -36,7 +37,6 @@ async function bootstrap(mode: string = '') {
   );
 
   app.use(logger());
-  app.use(catchError());
   app.use(router.routes()).use(router.allowedMethods());
 
   // 显示所有已注册的路由

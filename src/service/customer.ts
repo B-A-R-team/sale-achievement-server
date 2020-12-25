@@ -5,6 +5,7 @@
 
 import {
   DeleteResult,
+  getCustomRepository,
   getRepository,
   InsertResult,
   UpdateResult,
@@ -22,6 +23,7 @@ export interface CustomerDto extends QueryDeepPartialEntity<Customer> {
 
 export interface ICustomerService {
   getCustomers: () => Promise<Customer[]>;
+  getCustomer: (id: number) => Promise<Customer | undefined>;
   addCustomer: (customer: CustomerDto) => Promise<InsertResult>;
 }
 
@@ -35,6 +37,12 @@ export default function customerService(): ICustomerService {
   return {
     async getCustomers() {
       return await customerRepository.find();
+    },
+    async getCustomer(id) {
+      return await customerRepository.findOne({
+        relations: ['staff'],
+        where: { id },
+      });
     },
     async addCustomer(customer) {
       const { staff_id, course_id } = customer;

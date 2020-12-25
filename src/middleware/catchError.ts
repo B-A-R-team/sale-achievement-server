@@ -1,5 +1,4 @@
 import { Context } from 'koa';
-import { stateCode } from '../util/constant';
 import { responseError } from '../util/response';
 
 export function catchError() {

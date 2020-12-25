@@ -9,6 +9,7 @@ import { Staff } from '../model';
 import crypto from 'crypto';
 import { DEFAULT_PASSWORD } from '../util/constant';
 import generateToken from '../util/generateToken';
+import checkPassword from '../util/checkPassword';
 
 export interface IStaffService {
   getStaffs: () => Promise<Staff[]>;
@@ -29,6 +30,10 @@ export interface IStaffService {
     avatar_url: string,
     staff_id: string
   ) => Promise<{ staff: Staff; token: string } | null>;
+  loginInWeb: (
+    id: string,
+    password: string
+  ) => Promise<{ staff: QueryDeepPartialEntity<Staff>; token: string } | null>;
 }
 
 export default function courseService(): IStaffService {
@@ -38,7 +43,10 @@ export default function courseService(): IStaffService {
       return await staffRepository.find();
     },
     async getStaff(id) {
-      return await staffRepository.findOne(id);
+      return await staffRepository.findOne({
+        relations: ['customers'],
+        where: { id },
+      });
     },
     async getStaffByOpenid(openid) {
       const staff = await staffRepository.findOne({ openid });
@@ -86,6 +94,18 @@ export default function courseService(): IStaffService {
         const token = generateToken(staff_id);
         return {
           staff,
+          token,
+        };
+      }
+      return null;
+    },
+    async loginInWeb(id, password) {
+      const staff = await this.getStaff(+id);
+      if (staff && checkPassword(password, staff.password)) {
+        const { password: localPass, openid, ...returnStaff } = staff;
+        const token = generateToken(id);
+        return {
+          staff: returnStaff,
           token,
         };
       }

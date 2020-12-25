@@ -5,8 +5,8 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "nodemon --config nodemon.json",
-    "start": "MODE='development' & pm2 start --watch",
-    "start:test": "ts-node src/app.ts",
+    "start": "set RUN_MODE=development&pm2 start --watch",
+    "deploy": "set RUN_MODE=production&pm2 start --watch",
     "test": "mocha -r ts-node/register ./test/*test.ts --exit"
   },
   "keywords": [],
