@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { APP_ID, APP_SECRET } from './constant';
+import { APP_ID, APP_SECRET } from '../config/sensitive';
 
 /**
  * 请求微信api获取openid

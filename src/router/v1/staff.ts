@@ -5,6 +5,7 @@
  * GET     api/v1/staff
  * POST    api/v1/staff/register
  * POST    api/v1/staff/login
+ * POST    api/v1/staff/accesstoken
  * GET     api/v1/staff/:id
  */
 
@@ -16,6 +17,8 @@ import {
   responseSuccess,
   responseSuccessWithToken,
 } from '../../util/response';
+import fetch from 'node-fetch';
+import { APP_ID, APP_SECRET } from '../../config/sensitive';
 
 const router = new Router({
   prefix: 'staff',
@@ -44,6 +47,20 @@ router.post('/login', async (ctx) => {
   } else {
     ctx.body = responseError('登陆失败，请检查工号/密码');
   }
+});
+
+// api/v1/staff/accesstoken
+router.post('/accesstoken', async (ctx) => {
+  const response = await fetch(
+    'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' +
+      APP_ID +
+      '&secret=' +
+      APP_SECRET
+  );
+
+  const result = await response.json();
+
+  ctx.body = responseSuccess(result);
 });
 
 // api/v1/staff/:id

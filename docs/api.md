@@ -97,6 +97,45 @@
 }
 ```
 
+### 员工接口
+
+#### 获取微信access_token
+
+**URL：**`api/v1/staff/accesstoken`
+
+**描述：**获取微信access_token
+
+**方法：**POST
+
+**header参数：**
+
+| 参数名        | 必选 | 类型   | 说明  |
+| ------------- | ---- | ------ | ----- |
+| Authorization | √    | string | token |
+
+**成功响应：**
+
+```json
+{
+    code: 200,
+    message: 'success',
+    data: {
+        access_token: "xxxxx",
+		expires_in: 7200
+    },
+}
+```
+
+**失败响应：**
+
+```json
+{
+    code: 500,
+    message: 'error',
+    data: []
+}
+```
+
 
 
 ### 客户接口
