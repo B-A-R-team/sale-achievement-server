@@ -89,7 +89,9 @@ export default function courseService(): IStaffService {
         staff.nickname = nickname;
         staff.openid = openid;
 
-        await this.updateStaff(+staff_id, staff);
+        const { customers, ...newStaff } = staff;
+
+        await this.updateStaff(+staff_id, newStaff);
 
         const token = generateToken(staff_id);
         return {

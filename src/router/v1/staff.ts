@@ -17,8 +17,8 @@ import {
   responseSuccess,
   responseSuccessWithToken,
 } from '../../util/response';
+import { requestWechatAccessToken } from '../../util/requestWechatApi';
 import fetch from 'node-fetch';
-import { APP_ID, APP_SECRET } from '../../config/sensitive';
 
 const router = new Router({
   prefix: 'staff',
@@ -51,16 +51,38 @@ router.post('/login', async (ctx) => {
 
 // api/v1/staff/accesstoken
 router.post('/accesstoken', async (ctx) => {
-  const response = await fetch(
-    'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' +
-      APP_ID +
-      '&secret=' +
-      APP_SECRET
-  );
-
-  const result = await response.json();
+  const result = await requestWechatAccessToken();
 
   ctx.body = responseSuccess(result);
+});
+
+// api/v1/staff/qrcode
+router.post('/qrcode', async (ctx) => {
+  const { scene, page } = ctx.request.body;
+  const { access_token } = await requestWechatAccessToken();
+
+  console.log(
+    `{"scene": "${scene}", "page": "${page ? page : 'pages/index/index'}"}`
+  );
+
+  console.log(access_token);
+
+  const response = await fetch(
+    'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' +
+      access_token,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: `{"scene": "${scene}", "page": "${
+        page ? page : 'pages/index/index'
+      }"}`,
+    }
+  );
+
+  ctx.set('Content-Type', 'image/jpeg');
+  ctx.body = await response.buffer();
 });
 
 // api/v1/staff/:id

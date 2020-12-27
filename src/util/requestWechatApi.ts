@@ -18,5 +18,24 @@ export default async function requestWechatApi(code: string) {
 
   const wx_res = await response.json();
 
+  if (wx_res.errcode) {
+    console.log(wx_res);
+    throw '请检查code是否有效';
+  }
+
   return wx_res.openid;
+}
+
+/**
+ * 请求微信access_token
+ */
+export async function requestWechatAccessToken() {
+  const response = await fetch(
+    'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' +
+      APP_ID +
+      '&secret=' +
+      APP_SECRET
+  );
+
+  return await response.json();
 }
